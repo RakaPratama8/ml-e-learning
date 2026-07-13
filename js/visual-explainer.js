@@ -19,8 +19,7 @@ class VisualExplainer {
       <div class="glass-card">
         <div class="card-header">
           <div>
-            <span class="tag tag-purple">Visual Explainer</span>
-            <h3 style="margin-top: 0.4rem; font-size: 1.35rem;">Interactive Linear Regression & Gradient Descent</h3>
+            <h3 style="margin-top: 0.2rem; font-size: 1.35rem;">Interactive Linear Regression & Gradient Descent</h3>
           </div>
           <span style="color: var(--text-muted); font-size: 0.85rem;">Drag sliders to observe parameter impact</span>
         </div>
@@ -174,8 +173,7 @@ class VisualExplainer {
       <div class="glass-card">
         <div class="card-header">
           <div>
-            <span class="tag tag-cyan">Visual Explainer</span>
-            <h3 style="margin-top: 0.4rem; font-size: 1.35rem;">Interactive K-Means Clustering Simulator</h3>
+            <h3 style="margin-top: 0.2rem; font-size: 1.35rem;">Interactive K-Means Clustering Simulator</h3>
           </div>
           <span style="color: var(--text-muted); font-size: 0.85rem;">Real-time centroid Voronoi clustering</span>
         </div>

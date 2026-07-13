@@ -46,13 +46,12 @@ class QuizSystem {
       <div class="glass-card quiz-card">
         <div class="card-header">
           <div>
-            <span class="tag tag-purple">System 3: Dynamic Quiz Engine</span>
-            <h3 style="margin-top: 0.4rem; font-size: 1.35rem;">
+            <h3 style="margin-top: 0.2rem; font-size: 1.35rem;">
               Module ${this.currentModuleId} Knowledge Check (Question ${this.currentIndex + 1} of ${this.questions.length})
             </h3>
           </div>
           <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary);">
-            Standalone Question Bank
+            Question ${this.currentIndex + 1} / ${this.questions.length}
           </span>
         </div>
 

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learning Machine — Interactive Machine Learning E-Learning</title>
-  <meta name="description" content="Interactive browser-based Machine Learning E-Learning platform featuring Pyodide WebAssembly sandboxes, visual parameter sliders, pedagogical quiz remediation, and verified certificates." />
+  <title>Learning Machine — Interactive Machine Learning</title>
+  <meta name="description" content="Interactive browser-based Machine Learning course featuring Python sandboxes, visual explainers, and interactive assessments." />
   <link rel="stylesheet" href="index.css" />
 </head>
 <body>
@@ -14,24 +14,19 @@
     <a href="#" class="brand" onclick="store.setActiveLesson(101)">
       <div class="brand-icon">🤖</div>
       <span>Learning Machine</span>
-      <span class="tag tag-cyan" style="font-size: 0.68rem; margin-left: 0.25rem;">Browser ML Platform</span>
     </a>
 
     <div class="nav-actions">
       <div class="progress-pill">
-        <span style="color: var(--text-secondary); font-size: 0.82rem;">Overall Progress</span>
+        <span style="color: var(--text-secondary); font-size: 0.82rem;">Course Progress</span>
         <div class="progress-bar-container">
           <div class="progress-bar-fill" id="overallProgressFill"></div>
         </div>
         <span id="overallProgressText" style="font-family: var(--font-mono);">0%</span>
       </div>
 
-      <button class="cert-badge locked" id="certNavBadge" title="Complete all lessons and module quizzes to unlock your verified certificate">
+      <button class="cert-badge locked" id="certNavBadge" title="Complete all lessons and module quizzes to unlock your certificate">
         🔒 Certificate Locked
-      </button>
-
-      <button class="btn btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;" onclick="store.unlockAllForDemo()" title="Instantly complete all lessons and quizzes for testing">
-        ⚡ Demo Unlock All
       </button>
     </div>
   </header>
@@ -41,7 +36,7 @@
     
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
-      <div class="sidebar-heading">Curriculum Modules</div>
+      <div class="sidebar-heading">Curriculum</div>
 
       <div id="sidebarModulesContainer">
         <!-- Rendered dynamically by app.js -->
@@ -51,23 +46,23 @@
     <!-- Main Workspace Container -->
     <main class="main-workspace">
       
-      <!-- System Tabs switcher (Video vs Visual Explainer vs Pyodide Sandbox vs Quiz) -->
+      <!-- Content Tabs -->
       <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.85rem;" id="systemTabsContainer">
         <button class="btn btn-primary" id="tabLessonBtn">
-          🎬 1. Teaching Video
+          🎬 Video Lesson
         </button>
         <button class="btn btn-secondary" id="tabExplainerBtn">
-          📊 2. Visual Parameter Explainer
+          📊 Visual Explainer
         </button>
         <button class="btn btn-secondary" id="tabSandboxBtn">
-          🐍 3. Pyodide Code Sandbox
+          🐍 Code Sandbox
         </button>
         <button class="btn btn-secondary" id="tabQuizBtn">
-          📝 4. Module Quiz Engine
+          📝 Assessment
         </button>
       </div>
 
-      <!-- System View Containers -->
+      <!-- View Containers -->
       <div id="videoSystemContainer"></div>
       <div id="visualExplainerContainer" style="display: none;"></div>
       <div id="sandboxSystemContainer" style="display: none;"></div>
@@ -76,7 +71,7 @@
     </main>
   </div>
 
-  <!-- JavaScript Application Modules -->
+  <!-- JavaScript Modules -->
   <script src="js/course-data.js"></script>
   <script src="js/state-store.js"></script>
   <script src="js/video-system.js"></script>

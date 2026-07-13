@@ -39,8 +39,7 @@ class SandboxSystem {
       <div class="glass-card">
         <div class="card-header">
           <div>
-            <span class="tag tag-cyan">System 2: Interactive Sandbox</span>
-            <h3 style="margin-top: 0.4rem; font-size: 1.35rem;">Python ML Browser Sandbox: ${lesson.title}</h3>
+            <h3 style="margin-top: 0.2rem; font-size: 1.35rem;">Python Sandbox: ${lesson.title}</h3>
           </div>
           <span style="color: var(--text-muted); font-size: 0.85rem;">Powered by Pyodide WebAssembly</span>
         </div>

@@ -1,4 +1,4 @@
-// Teaching Video System with YouTube IFrame API Support & Completion Gates
+// Teaching Video System with YouTube IFrame API Support & Completion Gate
 class VideoSystem {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -27,20 +27,10 @@ class VideoSystem {
 
     this.container.innerHTML = `
       <div class="video-player-wrapper">
-        <div class="simulated-video-screen" id="simulatedScreen" style="padding: ${this.useYouTube ? '0' : '2rem'};">
+        <div class="simulated-video-screen" id="simulatedScreen" style="padding: ${this.useYouTube ? '0' : '2.5rem'};">
           ${this.useYouTube ? `
-            <div style="position: absolute; top: 1rem; left: 1.5rem; right: 1.5rem; z-index: 10; display: flex; justify-content: space-between; align-items: center; pointer-events: none;">
-              <span class="tag tag-cyan" style="pointer-events: auto; background: rgba(10,14,23,0.85);">YouTube Video Engine — Lesson #${lesson.id}</span>
-            </div>
             <div id="youtubePlayerContainer" style="width: 100%; height: 100%;"></div>
           ` : `
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-              <span class="tag tag-cyan">System 1: Video State Management</span>
-              <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary);">
-                ID: #${lesson.id}
-              </span>
-            </div>
-
             <div class="video-screen-content">
               <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(0, 242, 254, 0.15); border: 2px solid var(--accent-cyan); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; cursor: pointer;" id="playCenterBtn">
                 <span id="playCenterIcon" style="font-size: 1.8rem; color: var(--accent-cyan);">▶</span>
@@ -55,17 +45,13 @@ class VideoSystem {
 
         <div style="padding: 0.85rem 1.25rem; background: rgba(13, 18, 30, 0.95); border-top: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-right: 0.35rem;">📍 Jump to Concept:</span>
+            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-right: 0.35rem;">Chapters:</span>
             ${lesson.keyTimestamps.map(t => `
               <button class="btn btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.78rem;" onclick="window.videoSystem.seekTo(${t.time})">
-                ${formatTime(t.time)} - ${t.label}
+                ${formatTime(t.time)} — ${t.label}
               </button>
             `).join('')}
           </div>
-
-          <button class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;" id="simCompleteBtn" title="Simulate finishing video for testing">
-            ⏩ Skip to End (Demo)
-          </button>
         </div>
 
         ${!this.useYouTube ? `
@@ -87,15 +73,15 @@ class VideoSystem {
 
       <div class="completion-gate-banner ${isCompleted ? 'completed' : ''}" id="gateBanner">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <span style="font-size: 1.3rem;" id="gateBannerIcon">${isCompleted ? '✅' : '🔒'}</span>
+          <span style="font-size: 1.3rem;" id="gateBannerIcon">${isCompleted ? '✔' : '🔒'}</span>
           <div>
-            <div style="font-weight: 700;" id="gateBannerTitle">
-              ${isCompleted ? 'Lesson Completed! Completion Gate Unlocked' : 'Completion Gate Locked'}
+            <div style="font-weight: 600;" id="gateBannerTitle">
+              ${isCompleted ? 'Lesson Completed' : 'Watch Video to Complete Lesson'}
             </div>
-            <div style="font-size: 0.82rem; opacity: 0.9;" id="gateBannerSub">
+            <div style="font-size: 0.82rem; opacity: 0.85;" id="gateBannerSub">
               ${isCompleted 
-                ? 'You have completed this video lesson. You can proceed to the interactive sandbox & quiz.' 
-                : 'Watch until the end (or click Skip to End for testing) to unlock Mark as Complete.'}
+                ? 'You have completed this lesson. Continue to the interactive exercises.' 
+                : 'Watch this lesson to mark it complete and continue.'}
             </div>
           </div>
         </div>
@@ -103,7 +89,7 @@ class VideoSystem {
         <button class="btn ${isCompleted ? 'btn-primary' : 'btn-secondary'}" 
                 id="markCompleteBtn" 
                 ${isCompleted ? '' : 'disabled'}>
-          ${isCompleted ? 'Next Step: Sandbox →' : 'Complete Video First'}
+          ${isCompleted ? 'Continue to Sandbox →' : 'Incomplete'}
         </button>
       </div>
     `;
@@ -131,7 +117,6 @@ class VideoSystem {
         },
         events: {
           onStateChange: (event) => {
-            // YT.PlayerState.ENDED === 0
             if (event.data === 0) {
               if (this.currentLesson) {
                 store.markLessonCompleted(this.currentLesson.id);
@@ -163,7 +148,6 @@ class VideoSystem {
       clearInterval(this.timerInterval);
     }
 
-    // Progress tracker detecting real video duration
     this.timerInterval = setInterval(() => {
       if (!this.currentLesson) return;
 
@@ -202,13 +186,13 @@ class VideoSystem {
         const sub = document.getElementById('gateBannerSub');
         const btn = document.getElementById('markCompleteBtn');
 
-        if (icon) icon.innerText = '✅';
-        if (title) title.innerText = 'Lesson Completed! Completion Gate Unlocked';
-        if (sub) sub.innerText = 'You have completed this video lesson. You can proceed to the interactive sandbox & quiz.';
+        if (icon) icon.innerText = '✔';
+        if (title) title.innerText = 'Lesson Completed';
+        if (sub) sub.innerText = 'You have completed this lesson. Continue to the interactive exercises.';
         if (btn) {
           btn.className = 'btn btn-primary';
           btn.removeAttribute('disabled');
-          btn.innerText = 'Next Step: Sandbox →';
+          btn.innerText = 'Continue to Sandbox →';
         }
       }
     }
@@ -218,7 +202,6 @@ class VideoSystem {
     const playBtn = document.getElementById('playPauseBtn');
     const centerBtn = document.getElementById('playCenterBtn');
     const seekBar = document.getElementById('seekBar');
-    const simCompleteBtn = document.getElementById('simCompleteBtn');
     const markCompleteBtn = document.getElementById('markCompleteBtn');
 
     const togglePlay = () => {
@@ -239,18 +222,6 @@ class VideoSystem {
         const pct = Math.max(0, Math.min(1, clickX / rect.width));
         const targetTime = pct * this.currentLesson.durationSeconds;
         this.seekTo(targetTime);
-      };
-    }
-
-    if (simCompleteBtn) {
-      simCompleteBtn.onclick = () => {
-        const duration = (this.ytPlayer && typeof this.ytPlayer.getDuration === 'function' && this.ytPlayer.getDuration() > 0)
-          ? this.ytPlayer.getDuration()
-          : this.currentLesson.durationSeconds;
-
-        this.currentTime = duration;
-        store.markLessonCompleted(this.currentLesson.id);
-        this.syncGateBannerDOM();
       };
     }
 
