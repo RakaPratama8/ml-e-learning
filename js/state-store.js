@@ -25,7 +25,7 @@ class StateStore {
       certificate: {
         unlocked: false,
         id: "LM-2026-M9X2A8",
-        recipientName: "Alex Mercer",
+        recipientName: "Muhamad Raka Pratama",
         issueDate: new Date().toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })
       }
     };
