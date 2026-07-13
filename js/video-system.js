@@ -1,4 +1,4 @@
-// Teaching Video System with Stable YouTube Embed Support & Completion Gates
+// Teaching Video System with YouTube IFrame API Support & Completion Gates
 class VideoSystem {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
@@ -7,6 +7,7 @@ class VideoSystem {
     this.currentTime = 0;
     this.timerInterval = null;
     this.useYouTube = false;
+    this.ytPlayer = null;
   }
 
   renderLesson(lesson) {
@@ -118,35 +119,74 @@ class VideoSystem {
     const container = document.getElementById('youtubePlayerContainer');
     if (!container) return;
 
-    const embedUrl = `https://www.youtube.com/embed/${youtubeId}?rel=0`;
+    const divId = `ytPlayerDiv_${this.currentLesson.id}`;
+    container.innerHTML = `<div id="${divId}" style="width: 100%; height: 100%;"></div>`;
 
-    container.innerHTML = `
-      <iframe id="ytIframe_${this.currentLesson.id}"
-              src="${embedUrl}" 
-              style="width: 100%; height: 100%; border: none;" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen>
-      </iframe>
-    `;
+    const setupYTPlayer = () => {
+      this.ytPlayer = new window.YT.Player(divId, {
+        videoId: youtubeId,
+        playerVars: {
+          rel: 0,
+          modestbranding: 1
+        },
+        events: {
+          onStateChange: (event) => {
+            // YT.PlayerState.ENDED === 0
+            if (event.data === 0) {
+              if (this.currentLesson) {
+                store.markLessonCompleted(this.currentLesson.id);
+                this.syncGateBannerDOM();
+              }
+            }
+          }
+        }
+      });
+    };
+
+    if (window.YT && window.YT.Player) {
+      setupYTPlayer();
+    } else {
+      if (!document.getElementById('youtubeIframeApiScript')) {
+        const tag = document.createElement('script');
+        tag.id = 'youtubeIframeApiScript';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      }
+      const prevCallback = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (prevCallback) prevCallback();
+        setupYTPlayer();
+      };
+    }
 
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
     }
 
-    // Progress tracker for completion gate without re-rendering DOM
+    // Progress tracker detecting real video duration
     this.timerInterval = setInterval(() => {
       if (!this.currentLesson) return;
-      if (this.currentTime < this.currentLesson.durationSeconds) {
-        this.currentTime += 1;
-        store.updateVideoProgress(
-          this.currentLesson.id,
-          this.currentTime,
-          this.currentTime,
-          this.currentLesson.durationSeconds
-        );
 
-        this.syncGateBannerDOM();
+      let currentSec = this.currentTime + 1;
+      let targetDuration = this.currentLesson.durationSeconds;
+
+      if (this.ytPlayer && typeof this.ytPlayer.getCurrentTime === 'function') {
+        const ytTime = this.ytPlayer.getCurrentTime();
+        const ytDuration = this.ytPlayer.getDuration();
+        if (ytTime > 0) currentSec = ytTime;
+        if (ytDuration > 10) targetDuration = ytDuration;
       }
+
+      this.currentTime = currentSec;
+
+      store.updateVideoProgress(
+        this.currentLesson.id,
+        currentSec,
+        currentSec,
+        targetDuration
+      );
+
+      this.syncGateBannerDOM();
     }, 1000);
   }
 
@@ -204,7 +244,11 @@ class VideoSystem {
 
     if (simCompleteBtn) {
       simCompleteBtn.onclick = () => {
-        this.currentTime = this.currentLesson.durationSeconds;
+        const duration = (this.ytPlayer && typeof this.ytPlayer.getDuration === 'function' && this.ytPlayer.getDuration() > 0)
+          ? this.ytPlayer.getDuration()
+          : this.currentLesson.durationSeconds;
+
+        this.currentTime = duration;
         store.markLessonCompleted(this.currentLesson.id);
         this.syncGateBannerDOM();
       };
@@ -265,11 +309,8 @@ class VideoSystem {
       this.currentLesson.durationSeconds
     );
 
-    if (this.useYouTube) {
-      const iframe = document.getElementById(`ytIframe_${this.currentLesson.id}`);
-      if (iframe) {
-        iframe.src = `https://www.youtube.com/embed/${this.currentLesson.youtubeId}?start=${Math.round(targetSeconds)}&autoplay=1&rel=0`;
-      }
+    if (this.useYouTube && this.ytPlayer && typeof this.ytPlayer.seekTo === 'function') {
+      this.ytPlayer.seekTo(targetSeconds, true);
     } else {
       this.updateProgressUI();
     }

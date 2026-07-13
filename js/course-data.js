@@ -11,8 +11,8 @@ const COURSE_DATA = {
         {
           id: 101,
           title: "1.1 Introduction to Supervised Learning",
-          youtubeId: "KNAWp2S3w94", // Replace with your own YouTube Video ID
-          durationSeconds: 180,
+          youtubeId: "g9oESGzcA84", // Replace with your own YouTube Video ID
+          durationSeconds: 75,
           videoTopic: "Supervised Learning Paradigm & Regression vs. Classification",
           objectives: [
             "Distinguish supervised learning from unsupervised learning",
@@ -20,9 +20,10 @@ const COURSE_DATA = {
             "Explore real-world regression applications"
           ],
           keyTimestamps: [
-            { time: 15, label: "What is Supervised Learning?" },
-            { time: 65, label: "Regression vs Classification" },
-            { time: 120, label: "Feature Matrix & Target Vectors" }
+            { time: 1, label: "What is Supervised Learning?" },
+            { time: 13, label: "How Supervised Learning Works" },
+            { time: 29, label: "Practical Example" },
+            { time: 63, label: "Real-World Applications" }
           ],
           sandboxTemplate: `# Welcome to Pyodide Browser Python!
 # Let's inspect a simple supervised dataset using numpy.

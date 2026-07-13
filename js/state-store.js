@@ -64,8 +64,8 @@ class StateStore {
     prog.currentSeconds = Math.round(currentSeconds);
     prog.maxSeconds = Math.max(prog.maxSeconds, Math.round(maxSeconds));
 
-    // Completion Gate: 95% threshold OR explicit completion
-    if (prog.maxSeconds >= durationSeconds * 0.95) {
+    // Completion Gate: 88% threshold OR explicit completion
+    if (prog.maxSeconds >= durationSeconds * 0.88) {
       prog.isCompleted = true;
     }
     this.state.lessonProgress[lessonId] = prog;
